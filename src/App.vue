@@ -1,7 +1,13 @@
-<script setup>
+<script setup lang="ts">
+import { ref } from 'vue'
 import { ElTable, ElTableColumn } from 'element-plus'
 
-const tableData = [
+interface ITableData {
+  url: string
+  desc: string
+}
+
+const tableData = ref<ITableData[]>([
   {
     url: 'http://182.92.10.187/',
     desc: 'http://llmysnow.top/'
@@ -22,9 +28,9 @@ const tableData = [
     url: 'http://182.92.10.187:8083/',
     desc: 'Yapi地址'
   }
-]
+])
 
-const mdData = [
+const mdData = ref<ITableData[]>([
   {
     url: 'http://182.92.10.187:9090/',
     desc: 'Vue3离线文档'
@@ -41,7 +47,7 @@ const mdData = [
     url: 'http://182.92.10.187:9093/',
     desc: '云服务器部署文档'
   }
-]
+])
 </script>
 
 <template>
