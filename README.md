@@ -1,16 +1,4 @@
-## 使用须知
-
 ![image-20231120092259178](https://gitee.com/lilyn/pic/raw/master/lagoulearn-img/image-20231120092259178.png)
-
-- 选择0M带宽不能访问公网（不分配公网IP），如需分配公网IP请增加带宽值。
-- 云服务器ECS默认不开启虚拟内存如您需要使用请登录云服务器内部操作。[Linux开启swap（虚拟内存）](https://help.aliyun.com/document_detail/42534.html?spm=5176.6660585.vm-content.1.72b77992PbRdlu)、[Windows虚拟内存的设置](https://help.aliyun.com/document_detail/40995.html)
-- 若您购买了数据盘，请先挂载后使用。[Linux操作系统挂载数据盘方法](https://help.aliyun.com/document_detail/25426.html?spm=a2c4g.11186623.0.0.586f9b85Lf4fU7)、[Windows操作系统挂载数据盘方法](https://help.aliyun.com/document_detail/25418.html?spm=a2c4g.11186623.0.0.586f9b85X8N4sr)
-- 如您需要修改登录密码，请再ECS控制台对订购实例进行“重置密码“操作。请查看[操作指南](https://help.aliyun.com/document_detail/25439.html)
-- 如网站用于web访问，请及时备案。如需帮助，请查看[备案专区](http://beian.aliyun.com/)
-- 阿里云会不定期为您推送活动优惠以及业务通知，如需关闭消息或设置其他人接收消息，请前往 [消息中心](https://notifications.console.aliyun.com/#/subscribeMsg)进行管理
-- ECS使用中遇到环境部署、安全检测、服务器加速等问题，需要管理工具帮助，请查看[软件市场](http://market.aliyun.com/software)
-- 如您需要随时获取ECS资源信息，信息实时监控，请下载[阿里云APP](https://www.aliyun.com/aliyunapp/web/download)
-- 我们为您提供了专业免费的[第三方软件安装教程](https://smartservice.console.aliyun.com/service/service-center?accounttraceid=7e69e60d30a0463b99c1be88ef6375bcgita)，包含MySQL、宝塔、WordPress、Nginx等十余款常用软件，还可提问安装过程中遇到的异常问题。如无法自助完成安装，可购买[一对一专家服务](https://www.aliyun.com/service/one-to-one_expert_service)
 
 ## 免密登陆
 
@@ -303,6 +291,58 @@ http {
 
 替换 `/usr/share/nginx/html` 里的 index.html
 
+```bash
+$ cd /usr/share/nginx/html
+```
+
+#### 80端口占用问题
+
+```bash
+$ netstat -nutlp | grep 80
+tcp6       0      0 :::80                   :::*                    LISTEN      1/systemd
+
+# 或者使用 lsof 查看端口
+$ yum install lsof
+lsof -i:80
+```
+
+![image-20231124162441635](https://gitee.com/lilyn/pic/raw/master/lagoulearn-img/image-20231124162441635.png)
+
+解决方法：
+
+- 大概率是 httpd 的锅，关闭并禁用即可
+
+```bash
+# 停止进程
+$ systemctl stop httpd
+$ systemctl stop httpd.socket
+# 禁止随开机启动
+$ systemctl disable httpd
+$ systemctl disable httpd.socket
+```
+
+如果不使用 ipv6，直接在系统启动时禁用即可，这样也可以提高系统访问的速度
+
+```bash
+$ vim /etc/sysctl.conf
+net.ipv6.conf.all.disable_ipv6=1
+net.ipv6.conf.defalult.disable=1
+$ reboot
+```
+
+111 端口的进程是 systemd，实际上用的是 rpcbind，大部分服务是不依赖于rpcbind的，只有NFS需要用到这个服务，所以可以禁掉
+
+- systemd-resolve 系统服务解析主机名、IP 地址、域名、DNS 资源记录、服务
+
+![image-20231124164931990](https://gitee.com/lilyn/pic/raw/master/lagoulearn-img/image-20231124164931990.png)
+
+```bash
+$ systemctl stop rpcbind.socket
+$ systemctl stop rpcbind
+$ systemctl disable rpcbind.socket
+$ systemctl disable rpcbind
+```
+
 ### 安装Git
 
 ```bash
@@ -424,8 +464,25 @@ $ shutdown.sh
 
 官网下载：[https://help.sonatype.com/repomanager3/product-information/download](https://help.sonatype.com/repomanager3/product-information/download)
 
+解压 nexus 包
+
 ```bash
 $ tar -zxvf nexus-3.62.0-01.tar.gz
+```
+
+修运行 nexus 默认访问端口：
+
+```bash
+$ vim /home/software/nexus-3.62.0-01/etc/nexus-default.properties
+application-port=8082
+```
+
+注册服务
+
+```bash
+$ ln -s /home/software/nexus-3.62.0-01/bin/nexus /etc/init.d/nexus
+# 暂时先不设置开机自启了
+$ /etc/init.d/nexus start
 ```
 
 ## 数据库环境
@@ -812,3 +869,19 @@ echo 'java server starting...'
 之后勾选 `@`主机记录和 `www`主机记录，输入对应网站 IP 即可。等待几分钟即可绑定成功
 
 ![image-20231124103717742](https://gitee.com/lilyn/pic/raw/master/lagoulearn-img/image-20231124103717742.png)
+
+## 总结
+
+重启之后全部启动命令，包括：`systemctl enable <service_name>` 自动重启的命令
+
+```bash
+(root)
+$ systemctl start nginx
+$ systemctl start jenkins
+$ /home/template/start.sh
+$ /etc/init.d/nexus start
+
+(postgres)
+$ pg_ctl start
+```
+
