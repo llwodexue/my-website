@@ -661,6 +661,143 @@ $ ./redis-cli
 
 ![image-20231124083928737](https://gitee.com/lilyn/pic/raw/master/lagoulearn-img/image-20231124083928737.png)
 
+### 安装MySQL
+
+安装 mysql
+
+```bash
+$ yum install -y mysql-server
+```
+
+如果没有可用软件包 mysql-server，可以使用如下方法
+
+```bash
+# 下载mysql的repo源
+$ wget http://repo.mysql.com/mysql-community-release-el7-5.noarch.rpm
+# 安装rpm包，之后就有mysql repo源了
+$ rpm -ivh mysql-community-release-el7-5.noarch.rpm
+# 即可安装
+$ yum install -y mysql-server
+```
+
+启动 mysql 服务
+
+```bash
+$ systemctl start mysqld
+$ systemctl status mysqld
+```
+
+我这个版本 mysql 没有初始密码，如果有初始密码，可以通过如下命令去查看
+
+```bash
+$ find / -name mysqld.log
+/var/log/mysql/mysqld.log
+$ cat /var/log/mysql/mysqld.log | grep password
+```
+
+![image-20231127095213798](https://gitee.com/lilyn/pic/raw/master/lagoulearn-img/image-20231127095213798.png)
+
+登录，没有密码直接按回车即可登录
+
+```bash
+$ mysql -u root -p
+```
+
+登录之后更新 root 密码，之后并创建 admin 用户，并授权表和远程访问权限，授权完就可以使用 Navicat 进行连接了
+
+```sql
+# mysql8.0版本更新密码
+ALTER USER 'root'@'localhost' IDENTIFIED BY 'mysql@123';
+# 创建admin用户
+CREATE USER 'admin'@'%' IDENTIFIED BY 'admin@123';
+# 授权访问表
+GRANT ALL PRIVILEGES ON *.* TO 'admin'@'%';
+# 授权远程访问
+ALTER USER 'admin'@'%' IDENTIFIED WITH mysql_native_password BY 'admin@123';
+# 刷新
+FLUSH PRIVILEGES;
+
+# mysql5.6版本更新密码
+UPDATE user SET Password = PASSWORD('mysql@123') WHERE user = 'root';
+FLUSH PRIVILEGES;
+```
+
+### 安装MongoDB
+
+去官网选择对应版本进行下载
+
+- [https://www.mongodb.com/try/download/community](https://www.mongodb.com/try/download/community)
+
+![image-20231127105256517](https://gitee.com/lilyn/pic/raw/master/lagoulearn-img/image-20231127105256517.png)
+
+```bash
+$ tar -zxvf mongodb-linux-x86_64-rhel80-3.6.23.tgz
+```
+
+创建 logs 和 data 目录，创建 mongodb.log 文件
+
+```bash
+$ cd /usr/local/
+$ mkdir -p mongodb/logs mongodb/data
+$ touch /usr/local/mongodb/logs/mongodb.log
+```
+
+将解压的目前移动到 /usr/local/mongodb 目录下
+
+```bash
+$ mv mongodb-linux-x86_64-rhel80-3.6.23/* /usr/local/mongodb/
+```
+
+修改环境变量
+
+```bash
+$ vim /etc/profile
+export MONGODB_HOME=/usr/local/mongodb
+export PATH=$MONGODB_HOME/bin:$PATH
+$ source /etc/profile
+```
+
+编辑 mongodb.conf 文件
+
+```bash
+$ vim /etc/mongodb.conf
+# 指定数据库路径
+dbpath=/usr/local/mongodb/data
+# 指定MongoDB日志文件
+logpath=/usr/local/mongodb/logs/mongodb.log
+# 使用追加的方式写日志
+logappend=true
+# 端口号
+port=27017 
+# 方便外网访问
+bind_ip=0.0.0.0
+# 以守护进程的方式运行MongoDB，创建服务器进程
+fork=true
+```
+
+启动 mongodb
+
+```bash
+$ mongod -f /etc/mongodb.conf
+# 关闭
+$ mongod --shutdown -f /etc/mongodb.conf
+```
+
+登录 mongodb
+
+```bash
+$ mongo
+```
+
+创建用户
+
+```sql
+use admin;
+db.createUser({user:'root', pwd:'mongo@123', roles:[{role:'root', db:'admin'}]});
+# 验证账号是否授权成功, 1 验证成功，0 验证失败
+db.auth("root","mongo@123");
+```
+
 ## 前端环境
 
 ### 安装Nvm、Node
@@ -880,8 +1017,10 @@ echo 'java server starting...'
 (root)
 $ systemctl start nginx
 $ systemctl start jenkins
+$ systemctl start mysqld
 $ /home/template/start.sh
 $ /etc/init.d/nexus start
+$ pm2 start /home/software/yapi/vendors/server/app.js
 
 (postgres)
 $ pg_ctl start
