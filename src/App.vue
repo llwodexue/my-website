@@ -12,11 +12,11 @@ const tableData = [
   },
   {
     url: 'http://182.92.10.187:8081/',
-    desc: 'Jenkins地址'
+    desc: 'Jenkins地址（内存占用太高，暂停访问）'
   },
   {
     url: 'http://182.92.10.187:8082/',
-    desc: 'Nexus3私库地址'
+    desc: 'Nexus3私库地址（内存占用太高，暂停访问）'
   },
   {
     url: 'http://182.92.10.187:8083/',
@@ -58,7 +58,7 @@ const mdData = [
             </a>
           </template>
         </el-table-column>
-        <el-table-column prop="desc" label="项目描述" min-width="170" />
+        <el-table-column prop="desc" label="项目描述" min-width="180" />
       </el-table>
     </div>
 
@@ -74,7 +74,7 @@ const mdData = [
             </a>
           </template>
         </el-table-column>
-        <el-table-column prop="desc" label="项目描述" min-width="170" />
+        <el-table-column prop="desc" label="项目描述" min-width="180" />
       </el-table>
     </div>
   </div>
