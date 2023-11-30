@@ -345,6 +345,19 @@ $ systemctl disable rpcbind.socket
 $ systemctl disable rpcbind
 ```
 
+#### 与systemd竞争问题
+
+![image-20231129095904721](https://gitee.com/lilyn/pic/raw/master/lagoulearn-img/image-20231129095904721.png)
+
+```bash
+# 创建目录
+$ mkdir /etc/systemd/system/nginx.service.d
+# 增加配置文件
+$ printf "[Service]\nExecStartPost=/bin/sleep 0.1\n" > /etc/systemd/system/nginx.service.d/override.conf
+$ systemctl daemon-reload
+$ systemctl restart nginx
+```
+
 ### 安装Git
 
 ```bash
@@ -949,14 +962,24 @@ $ echo "source ~/.nvm/nvm.sh" >> ~/.profile
 
 安装 node
 
+- 离线版本下载：[https://nodejs.org/download/release/](https://nodejs.org/download/release/)
+
 ```bash
+$ nvm install 12.12.0
 $ nvm install 16.20.0
+$ nvm install 18.12.0
 ```
 
-安装 pnpm、serve 依赖
+设置默认 node
 
 ```bash
-$ npm i -g pnpm yarn serve
+$ nvm alias default 16.20.0
+```
+
+全局安装常用依赖
+
+```bash
+$ npm i -g pnpm yarn serve pm2
 ```
 
 设置 npm 镜像源
@@ -1097,7 +1120,7 @@ $ nohup ./frps -c frps.toml >/dev/null 2>&1 &
 ```bash
 $ vim start-frps.sh
 #!/bin/bash
-PID=`ps -ef | grep frps | awk '{printf $2}'`
+PID=`ps -ef | grep frps | grep frps.toml | awk '{printf $2}'`
 if [ -z $PID ];
 	then
 		echo "frps server not started"
@@ -1231,7 +1254,8 @@ $ systemctl start nginx
 $ systemctl start mysqld
 $ systemctl start mongodb.service    
 # 可以启动
-$ pm2 start /home/software/yapi/vendors/server/app.js
+$ pm2 start -n yapi /home/software/yapi/vendors/server/app.js
+$ pm2 start -n xxx java -- -jar xxx.jar
 $ mongod -f /etc/mongodb.conf
 # 暂时无需启动
 $ systemctl start jenkins
