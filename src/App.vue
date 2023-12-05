@@ -9,43 +9,47 @@ interface ITableData {
 
 const tableData = ref<ITableData[]>([
   {
-    url: 'http://182.92.10.187/',
+    url: 'http://llmysnow.top/',
     desc: 'http://llmysnow.top/'
   },
   {
-    url: 'http://182.92.10.187:8080/',
-    desc: 'Vue2.7项目地址'
+    url: 'http://llmysnow.top:8080/',
+    desc: 'Vue2.7项目地址（内存占用太高，暂停访问）'
   },
   {
-    url: 'http://182.92.10.187:8081/',
+    url: 'http://llmysnow.top:8081/',
     desc: 'Jenkins地址（内存占用太高，暂停访问）'
   },
   {
-    url: 'http://182.92.10.187:8082/',
+    url: 'http://llmysnow.top:8082/',
     desc: 'Nexus3私库地址（内存占用太高，暂停访问）'
   },
   {
-    url: 'http://182.92.10.187:8083/',
+    url: 'http://llmysnow.top:8083/',
     desc: 'Yapi地址'
+  },
+  {
+    url: 'http://llmysnow.top:9094/',
+    desc: '多看读书'
   }
 ])
 
 const mdData = ref<ITableData[]>([
   {
-    url: 'http://182.92.10.187:9090/',
+    url: 'http://llmysnow.top:9090/',
     desc: 'Vue3离线文档'
   },
   {
-    url: 'http://182.92.10.187:9091/',
+    url: 'http://llmysnow.top:9091/',
     desc: 'ElementPlus离线文档'
   },
   {
-    url: 'http://182.92.10.187:9092/',
+    url: 'http://llmysnow.top:9092/',
     desc: 'ElementUI离线文档'
   },
   {
-    url: 'http://182.92.10.187:9093/',
-    desc: '云服务器部署文档'
+    url: 'http://llmysnow.top:9093/',
+    desc: 'Vitepress博客文档'
   }
 ])
 </script>
