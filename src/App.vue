@@ -10,7 +10,7 @@ interface ITableData {
 const tableData = ref<ITableData[]>([
   {
     url: 'http://llmysnow.top/',
-    desc: 'http://llmysnow.top/'
+    desc: '182.92.10.187'
   },
   {
     url: 'http://llmysnow.top:8080/',
@@ -48,7 +48,7 @@ const mdData = ref<ITableData[]>([
     desc: 'ElementUI离线文档'
   },
   {
-    url: 'http://llmysnow.top:9093/',
+    url: 'https://llmysnow.top/',
     desc: 'Vitepress博客文档'
   }
 ])
