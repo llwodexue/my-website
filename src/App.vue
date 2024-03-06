@@ -14,19 +14,19 @@ const tableData = ref<ITableData[]>([
   },
   {
     url: 'http://llmysnow.top:8080/',
-    desc: '- Vue2.7项目地址（内存占用太高，暂停访问）'
+    desc: '- Vue2.7项目地址（暂停访问）'
   },
   {
     url: 'http://llmysnow.top:8081/',
-    desc: '- Jenkins地址（内存占用太高，暂停访问）'
+    desc: '- Jenkins地址（暂停访问）'
   },
   {
     url: 'http://llmysnow.top:8082/',
-    desc: '- Nexus3私库地址（内存占用太高，暂停访问）'
+    desc: '- Nexus3私库地址（暂停访问）'
   },
   {
     url: 'http://llmysnow.top:8083/',
-    desc: 'Yapi地址'
+    desc: 'Yapi地址（暂停访问）'
   },
   {
     url: 'http://llmysnow.top:9094/',
@@ -54,6 +54,10 @@ const mdData = ref<ITableData[]>([
   {
     url: 'https://llmysnow.top/',
     desc: 'Vitepress博客文档'
+  },
+  {
+    url: 'http://llmysnow.top:9096/',
+    desc: 'Hexo博客文档'
   }
 ])
 </script>
