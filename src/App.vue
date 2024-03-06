@@ -14,15 +14,15 @@ const tableData = ref<ITableData[]>([
   },
   {
     url: 'http://llmysnow.top:8080/',
-    desc: '- Vue2.7项目地址（暂停访问）'
+    desc: 'Vue2.7项目地址（暂停访问）'
   },
   {
     url: 'http://llmysnow.top:8081/',
-    desc: '- Jenkins地址（暂停访问）'
+    desc: 'Jenkins地址（暂停访问）'
   },
   {
     url: 'http://llmysnow.top:8082/',
-    desc: '- Nexus3私库地址（暂停访问）'
+    desc: 'Nexus3私库地址（暂停访问）'
   },
   {
     url: 'http://llmysnow.top:8083/',
