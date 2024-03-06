@@ -40,15 +40,15 @@ const tableData = ref<ITableData[]>([
 
 const mdData = ref<ITableData[]>([
   {
-    url: 'http://llmysnow.top:9090/',
+    url: 'https://llmysnow.top:9090/',
     desc: 'Vue3离线文档'
   },
   {
-    url: 'http://llmysnow.top:9091/',
+    url: 'https://llmysnow.top:9091/',
     desc: 'ElementPlus离线文档'
   },
   {
-    url: 'http://llmysnow.top:9092/',
+    url: 'https://llmysnow.top:9092/',
     desc: 'ElementUI离线文档'
   },
   {
@@ -56,7 +56,7 @@ const mdData = ref<ITableData[]>([
     desc: 'Vitepress博客文档'
   },
   {
-    url: 'http://llmysnow.top:9096/',
+    url: 'https://llmysnow.top:9096/',
     desc: 'Hexo博客文档'
   }
 ])
