@@ -60,6 +60,13 @@ const mdData = ref<ITableData[]>([
     desc: 'Hexo博客文档'
   }
 ])
+
+const demoData = ref<ITableData[]>([
+  {
+    url: 'https://llmysnow.top:9080/',
+    desc: '加减法练习工具'
+  }
+])
 </script>
 
 <template>
@@ -85,6 +92,22 @@ const mdData = ref<ITableData[]>([
     </div>
     <div class="table-container card">
       <el-table :data="mdData" stripe fit style="width: 100%">
+        <el-table-column prop="url" label="项目地址" min-width="220">
+          <template #default="{ row }">
+            <a :href="row.url" target="_blank" style="color: #0633ff">
+              {{ row.url }}
+            </a>
+          </template>
+        </el-table-column>
+        <el-table-column prop="desc" label="项目描述" min-width="180" />
+      </el-table>
+    </div>
+
+    <div class="table-search card">
+      <div>Demo</div>
+    </div>
+    <div class="table-container card">
+      <el-table :data="demoData" stripe fit style="width: 100%">
         <el-table-column prop="url" label="项目地址" min-width="220">
           <template #default="{ row }">
             <a :href="row.url" target="_blank" style="color: #0633ff">
